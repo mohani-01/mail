@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Use buttons to toggle between views
   document.querySelector('#inbox').addEventListener('click', () => load_mailbox('inbox'));
-  document.querySelector('#sent').addEventListener('click', () => load_mailbox('ssent'));
+  document.querySelector('#sent').addEventListener('click', () => load_mailbox('sent'));
   document.querySelector('#archived').addEventListener('click', () => load_mailbox('archive'));
   document.querySelector('#compose').addEventListener('click', compose_email);
 
@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', function() {
   // listen to click on the whole object 
   document.addEventListener('click', event => {
     const element = event.target;
-    console.log(element);
     if (element.className === 'hide') {
         element.parentElement.remove();
         }
@@ -27,14 +26,23 @@ function compose_email() {
     // Compose email
     document.querySelector('#compose-form').onsubmit = function() {
       const form = document.querySelector('#compose-view');
-    
 
+      const emailRecipients = document.querySelector('#compose-recipients').value;
+      const emailSubject = document.querySelector('#compose-subject').value;
+      const emailBody = document.querySelector('#compose-body').value;
+      console.log()
+      if (emailSubject.length == 0 && emailBody.length === 0 && emailRecipients.length > 0 ) {
+        const txt = "Send this message without a subject or text in the body?";
+       if (confirm(txt) === false) {
+        return false;
+       }
+      }
       fetch('/emails', {
         method: 'POST',
         body: JSON.stringify({
-          recipients: document.querySelector('#compose-recipients').value,
-          subject: document.querySelector('#compose-subject').value,
-          body: document.querySelector('#compose-body').value,
+          recipients: emailRecipients,
+          subject: emailSubject,
+          body: emailBody,
         })
       })      
   
@@ -73,6 +81,8 @@ function compose_email() {
 
       return false;
     }  
+       
+
   
   // Show compose view and hide other views
 
@@ -263,7 +273,7 @@ function reply(id) {
 
   document.querySelector('#compose-recipients').value = email.sender;
 
-  if (!email.subject.startsWith('Re: ')) {
+  if (!email.subject.startsWith('Re:')) {
     document.querySelector('#compose-subject').value = `Re: ${email.subject}`;
   } else {
     document.querySelector('#compose-subject').value = email.subject;
