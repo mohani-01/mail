@@ -1,3 +1,62 @@
 textarea {
-    min-height: 400px;
+    min-height: 300px;
+    margin-bottom: 20px;
+}
+
+
+
+.mailbox {
+    border: 2px solid black ;
+    display: grid;
+    column-gap: 20px;
+    line-height:  30px;
+    height: 40px;
+    grid-template-columns: 230px auto  170px;
+    padding: 4px;
+    width: 100%;
+    object-fit: scale-down;
+}
+
+.mailbox:hover {
+    cursor: pointer;
+}
+
+.mailbox > div {
+    overflow: hidden;
+    overflow-wrap: break-word;
+}
+
+
+.top-mailbox {
+    display: flex;
+    justify-content: space-evenly;
+
+}
+
+.top-mailbox > div {
+    width: 100%;
+}
+
+
+.read {
+    background-color: rgb(165, 165, 165);
+}
+
+
+.hide {
+    height: 100%;
+    line-height: 100%;
+    background-color: inherit;
+    border-radius: 5px;
+    
+    padding: 5px;
+    border: 1px solid transparent;
+    float: right;
+    /* font-size: 20px; */
+    color: rgb(35, 35, 35);
+}
+
+.hide:hover {
+    color: rgb(0, 0, 0);
+    border: 1px solid black;
 }

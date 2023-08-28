@@ -56,6 +56,7 @@ def compose(request):
     users = set()
     users.add(request.user)
     users.update(recipients)
+    
     for user in users:
         email = Email(
             user=user,
