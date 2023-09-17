@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector('#archived').addEventListener('click', () => load_mailbox('archive'));
   document.querySelector('#compose').addEventListener('click', compose_email);
 
+  
   // By default, load the inbox
   load_mailbox('inbox');
   
@@ -13,8 +14,12 @@ document.addEventListener('DOMContentLoaded', function() {
   document.addEventListener('click', event => {
     const element = event.target;
     if (element.className === 'hide') {
+      element.parentElement.style.animationPlayState = 'running';
+      element.parentElement.addEventListener('animationend', () => {
+
         element.parentElement.remove();
-        }
+      })
+    }
   })
 
 });
@@ -30,12 +35,17 @@ function compose_email() {
       const emailRecipients = document.querySelector('#compose-recipients').value;
       const emailSubject = document.querySelector('#compose-subject').value;
       const emailBody = document.querySelector('#compose-body').value;
-      console.log()
+
+
+
       if (emailSubject.length == 0 && emailBody.length === 0 && emailRecipients.length > 0 ) {
-        const txt = "Send this message without a subject or text in the body?";
-       if (confirm(txt) === false) {
-        return false;
-       }
+        
+        const txt = "Send this message without a subject and text in the body?";
+
+        // ask users if they want to send a message without subject and body
+        if (confirm(txt) === false) {
+          return false;
+        }
       }
       fetch('/emails', {
         method: 'POST',
@@ -47,16 +57,16 @@ function compose_email() {
       })      
   
       .then(response =>  response.json())
-     
       .then(result => {
+        // get an error and remove div which display error
         if (result.error) {   
           if (form.querySelector('#compose-message')) {
             form.querySelector('#compose-message').remove();
           }
 
+          // create a new div which display the new error
           const div = document.createElement('div');
           div.id = 'compose-message';
-          div.className = 'alert alert-danger';
           div.innerHTML = `${result.error} <button class='hide'>X</button>`;
           form.insertBefore(div, form.children[1])
           return;
@@ -65,10 +75,9 @@ function compose_email() {
         // send the user to sent page/ portion (its like redirecting a user)
         load_mailbox('sent')
 
-        // Show the user response for their composed email success or error
+        // new div to diplay success message
         const div = document.createElement('div');
         div.id = 'sent-message';
-        div.className = 'alert alert-success';
         div.innerHTML = `${result.message} <button class='hide'>X</button>`;
         document.querySelector('#emails-view').append(div);
 
@@ -85,7 +94,6 @@ function compose_email() {
 
   
   // Show compose view and hide other views
-
   document.querySelector('#compose-view').style.display = 'block';
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#detail-view').style.display = 'none';
@@ -104,6 +112,8 @@ function load_mailbox(mailbox) {
   fetch(`/emails/${mailbox}`)
   .then(response => response.json())
   .then(emails => {
+    
+    // show the user inv
     if (emails.error) {
       error(emails.error);
     }
@@ -115,11 +125,11 @@ function load_mailbox(mailbox) {
       } else {
         div.className = 'mailbox';
       }
-
+      const subject = send_subject(email.subject);
       if (mailbox === 'sent')  { 
-        div.innerHTML =  `<div>To: ${email.recipients}</div> <div>${email.subject}</div> <div>${email.timestamp}</div>`;
+        div.innerHTML =  `<div class='recipient'>To: ${email.recipients}</div> <div class='subject'>${subject}</div> <div class='time'>${email.timestamp}</div>`;
       } else {
-        div.innerHTML =  `<div>From: ${email.sender}</div> <div>${email.subject}</div> <div>${email.timestamp}</div>`;
+        div.innerHTML =  `<div class='recipient'>From: ${email.sender}</div> <div class='subject'>${subject}</div> <div  class='time'>${email.timestamp}</div>`;
       }
 
       document.querySelector('#emails-view').append(div)
@@ -127,7 +137,6 @@ function load_mailbox(mailbox) {
       div.addEventListener('click', () => {
         load_detail(email.id, mailbox)       
       });
-
 
     });
     
@@ -155,7 +164,9 @@ function load_detail(email_id, mailbox) {
   fetch(`emails/${email_id}`)
   .then(response => response.json())
   .then(email => {
-
+    if (email.error) {
+      error(email.error);
+    }
     // change the value of read to true
     if(!email.read) {
       change_read(email.id);
@@ -170,62 +181,50 @@ function load_detail(email_id, mailbox) {
     element.className = 'inbox';
 
     // body of the page
-    console.log("This one is before", email.body);
     const body = email.body.replaceAll('\n', '<br>');
-    console.log("this is after", body);
-    let Archieve = '';
+
+    const subject = send_subject(email.subject);
+    let Archieve;
+
     if (email.archived == false) {
-       Archieve = `<button id='archive' data-id=${email.id}>Archive</button>`
+       Archieve = `<button id='archive' class='btn btn-primary'  data-id=${email.id}>Archive</button>`
     } else {
-       Archieve = `<button id='archive' data-id=${email.id}>Unarchive</button>`
+       Archieve = `<button id='archive' class='btn btn-primary'  data-id=${email.id}>Unarchive</button>`
     }
     // add reply and arhieve if the mailbox is inbox     
     if (mailbox === 'inbox' || mailbox == 'archive') {
-      element.innerHTML = `<div class='top-mailbox'>
-                              <div>
-                                <div>From: ${email.sender}</div> 
-                                <div>To: ${email.recipients}</div> 
-                                <div>Subject: ${email.subject}</div> 
-                                <div>Timestamp: ${email.timestamp}</div>
+      element.innerHTML = `<div class='subject'><h4>${subject}</h4></div>
+                          <div class='top-mailbox'>
+      
+                              <div class='mailbox-content'>
+                                <div><strong>From: </strong>${email.sender}</div> 
+                                <div><strong>To: </strong>${email.recipients}</div> 
+                                <div><strong>Timestamp: </strong>${email.timestamp}</div>
                               </div>
-                              <div> 
-                                <button id='reply' class='btn btn-primary' data-id='${email.id}'>Reply</button> 
-                                ${Archieve}
+                              <div class='side-mailbox'> 
+                                <div><button id='reply' class='btn btn-primary' data-id='${email.id}'>Reply</button></div>
+                                <div>${Archieve}</div>
                               </div>
                           </div>
                           <hr>
                           <div>${body}</div>`;
       
     } else {
-      if (mailbox === 'archive') {
-
-        element.innerHTML = `<div class='top-mailbox'>
-                              <div>
-                                <div>From: ${email.sender}</div> 
-                                <div>To: ${email.recipients}</div> 
-                                <div>Subject: ${email.subject}</div> 
-                                <div>Timestamp: ${email.timestamp}</div>
-                              </div>
-                              <div> 
-                                <button id='archieve' data-id='${email.id}'>Unarchive</button> 
-                              </div>
-                            </div>
+        element.innerHTML = `<div class='subject'><h4>${subject}</h4></div>
                             <hr>
-                            <div>${body}</div>`;
-      } else {
-        element.innerHTML = `<div class='top-mailbox'>
+                          <div class='top-mailbox'>
+
                               <div>
-                                <div>From: ${email.sender}</div> 
-                                <div>To: ${email.recipients}</div> 
-                                <div>Subject: ${email.subject}</div> 
-                                <div>Timestamp: ${email.timestamp}</div>
+                                <div><strong>From: </strong>${email.sender}</div> 
+                                <div><strong>To: </strong>${email.recipients}</div>  
+                                <div><strong>Timestamp: </strong>${email.timestamp}</div>
                               </div>
                             </div>
                             <hr>
                             <div>${body}</div>`;
 
       }
-    }
+    
 
     document.querySelector('#detail-view').append(element);
     
@@ -258,7 +257,7 @@ function change_read(id) {
         read: true
     })
   })
-  .catch(error => console.log(error));
+  .catch(error => console.log('Error', error))
 }
 
 
@@ -266,21 +265,19 @@ function reply(id) {
   fetch(`/emails/${id}`)
   .then(response => response.json())
   .then(email => {
+    compose_email()
+    document.querySelector('#compose-view').querySelector('h3').innerHTML = 'Reply';
 
+    document.querySelector('#compose-recipients').value = email.sender;
 
-  compose_email()
-  document.querySelector('#compose-view').querySelector('h3').innerHTML = 'Reply';
+    if (!email.subject.startsWith('Re:')) {
+      document.querySelector('#compose-subject').value = `Re: ${email.subject}`;
+    } else {
+      document.querySelector('#compose-subject').value = email.subject;
+    }
+    // "On Jan 1 2020, 12:00 AM foo@example.com wrote:"
 
-  document.querySelector('#compose-recipients').value = email.sender;
-
-  if (!email.subject.startsWith('Re:')) {
-    document.querySelector('#compose-subject').value = `Re: ${email.subject}`;
-  } else {
-    document.querySelector('#compose-subject').value = email.subject;
-  }
-  // "On Jan 1 2020, 12:00 AM foo@example.com wrote:"
-
-  document.querySelector('#compose-body').value = `\n\n\n---------------\nOn ${email.timestamp} ${email.sender} wrote: \n${email.body}`;    
+    document.querySelector('#compose-body').value = `\n\n\n---------------\nOn ${email.timestamp} ${email.sender} wrote: \n${email.body}`;    
 
 });
   
@@ -304,4 +301,22 @@ function error(message) {
   document.querySelector('#detail-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'none';
 
+}
+
+function send_subject(emailSubject) {
+
+      if (emailSubject.trim().length <= 0 ) {
+        console.log('more than zero character',emailSubject);
+        return "<i>(no Subject)</i>";
+        } else if ( emailSubject.startsWith('Re:')) {
+          second = emailSubject.split(':', 2)[1];
+
+          if (second.trim().length <= 0 ) {
+            return "<i>(no Subject)</i>";
+          }
+
+         return ` ${emailSubject}`;
+        } else {
+        return emailSubject;
+      }
 }

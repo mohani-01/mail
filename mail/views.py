@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .models import User, Email
 
-
+    
 def index(request):
 
     # Authenticated users view their inbox
@@ -114,7 +114,7 @@ def email(request, email_id):
     # Update whether email is read or should be archived
     elif request.method == "PUT":
         data = json.loads(request.body)
-        if data.get("read") is not None:
+        if data.get("read") is not None:    
             email.read = data["read"]
         if data.get("archived") is not None:
             email.archived = data["archived"]
