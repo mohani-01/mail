@@ -123,6 +123,7 @@
 }
 .mailbox {
     border: 1px solid rgb(156, 184, 244);
+    background-image: linear-gradient(90deg,  white, white );
     border-left: 0;
     border-right: 0;
     width: 100%;
@@ -143,7 +144,7 @@
 
 
 .read {
-    background-image: linear-gradient(90deg, rgb(250, 250, 250) 20%, rgb(197, 197, 197)) ;
+    background-image: linear-gradient(90deg, rgb(250, 250, 250) 20% , rgb(197, 197, 197)) ;
 
 }
 
