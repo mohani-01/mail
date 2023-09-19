@@ -187,9 +187,9 @@ function load_detail(email_id, mailbox) {
     let Archieve;
 
     if (email.archived == false) {
-       Archieve = `<button id='archive' class='btn btn-primary'  data-id=${email.id}>Archive</button>`
+       Archieve = `<button id='archive' class='btn btn-outline-primary'  data-id=${email.id}>Archive</button>`
     } else {
-       Archieve = `<button id='archive' class='btn btn-primary'  data-id=${email.id}>Unarchive</button>`
+       Archieve = `<button id='archive' class='btn btn-outline-warning'  data-id=${email.id}>Unarchive</button>`
     }
     // add reply and arhieve if the mailbox is inbox     
     if (mailbox === 'inbox' || mailbox == 'archive') {
@@ -202,7 +202,7 @@ function load_detail(email_id, mailbox) {
                                 <div><strong>Timestamp: </strong>${email.timestamp}</div>
                               </div>
                               <div class='side-mailbox'> 
-                                <div><button id='reply' class='btn btn-primary' data-id='${email.id}'>Reply</button></div>
+                                <div><button id='reply' class='btn btn-outline-primary' data-id='${email.id}'>Reply</button></div>
                                 <div>${Archieve}</div>
                               </div>
                           </div>
@@ -307,12 +307,12 @@ function send_subject(emailSubject) {
 
       if (emailSubject.trim().length <= 0 ) {
         console.log('more than zero character',emailSubject);
-        return "<i>(no Subject)</i>";
+        return "(no Subject)";
         } else if ( emailSubject.startsWith('Re:')) {
           second = emailSubject.split(':', 2)[1];
 
           if (second.trim().length <= 0 ) {
-            return "<i>(no Subject)</i>";
+            return "(no Subject)";
           }
 
          return ` ${emailSubject}`;
