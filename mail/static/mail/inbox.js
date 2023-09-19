@@ -139,7 +139,6 @@ function load_mailbox(mailbox) {
       });
 
     });
-    
   
   })
  
