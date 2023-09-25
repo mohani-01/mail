@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // By default, load the inbox
   load_mailbox('inbox');
+  // load_mailbox('inbox');
   
   // listen to click on the whole object 
   document.addEventListener('click', event => {
@@ -102,13 +103,29 @@ function compose_email() {
   document.querySelector('#compose-recipients').value = '';
   document.querySelector('#compose-subject').value = '';
   document.querySelector('#compose-body').value = '';
+  document.querySelector('#to').style.display = 'none';
+
+  document.querySelector('#compose-recipients').addEventListener('focus', () => {
+
+  document.querySelector('#to').style.display = 'table-cell';
+  document.querySelector("#compose-recipients").style.paddingLeft = "0px";
+  document.querySelector("#compose-recipients").placeholder = "";
   
+  });
+
+  document.querySelector('#compose-recipients').addEventListener('focusout', () => {
+
+    document.querySelector('#to').style.display = 'none';
+    document.querySelector("#compose-recipients").style.paddingLeft = "20px";
+    document.querySelector("#compose-recipients").placeholder = "Recipients";
+
+  });
 }
 
 // Mailbox
 function load_mailbox(mailbox) {
 
-  // check if the ${mailbox} is inbox, sent or archieve
+  // check if the ${mailbox} is inbox, sent or archive
   fetch(`/emails/${mailbox}`)
   .then(response => response.json())
   .then(emails => {
@@ -183,12 +200,12 @@ function load_detail(email_id, mailbox) {
     const body = email.body.replaceAll('\n', '<br>');
 
     const subject = send_subject(email.subject);
-    let Archieve;
+    let Archive;
 
     if (email.archived == false) {
-       Archieve = `<button id='archive' class='btn btn-outline-primary'  data-id=${email.id}>Archive</button>`
+       Archive = `<button id='archive' class='btn btn-outline-primary'  data-id=${email.id}>Archive</button>`
     } else {
-       Archieve = `<button id='archive' class='btn btn-outline-warning'  data-id=${email.id}>Unarchive</button>`
+       Archive = `<button id='archive' class='btn btn-outline-warning'  data-id=${email.id}>Unarchive</button>`
     }
     // add reply and arhieve if the mailbox is inbox     
     if (mailbox === 'inbox' || mailbox == 'archive') {
@@ -202,7 +219,7 @@ function load_detail(email_id, mailbox) {
                               </div>
                               <div class='side-mailbox'> 
                                 <div><button id='reply' class='btn btn-outline-primary' data-id='${email.id}'>Reply</button></div>
-                                <div>${Archieve}</div>
+                                <div>${Archive}</div>
                               </div>
                           </div>
                           <hr>
@@ -234,7 +251,7 @@ function load_detail(email_id, mailbox) {
     document.querySelector('#compose-view').style.display = 'none';
 
 
-    // wait for the user to click the reply, archieve button
+    // wait for the user to click the reply, archive button
     element.addEventListener('click', event => {
       const button = event.target;
       if (button.id === 'reply') {
