@@ -214,7 +214,8 @@
 }
 
 #submit {
-    margin-left: 20px;
+    float: right;
+    padding: .5rem 2rem;
     margin-bottom: 25px;
     text-align: end;
 }
