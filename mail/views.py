@@ -160,6 +160,13 @@ def register(request):
         # Ensure password matches confirmation
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
+
+        if not email or not password:
+            return render(request, "mail/register.html", {
+                "message": "All fields are required"
+            })
+
+
         if password != confirmation:
             return render(request, "mail/register.html", {
                 "message": "Passwords must match."
