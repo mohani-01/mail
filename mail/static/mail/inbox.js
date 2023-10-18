@@ -50,7 +50,7 @@ function compose_email() {
         }
       }
       // fetch the data
-      fetch('../emails', {
+      fetch('../../emails', {
         method: 'POST',
         body: JSON.stringify({
           recipients: emailRecipients,
@@ -198,7 +198,7 @@ function load_mailbox(mailbox) {
 function load_detail(email_id, mailbox) {
 
   // ask for the data
-  fetch(`../emails/${email_id}`)
+  fetch(`../../emails/${email_id}`)
   .then(response => response.json())
   .then(email => {
     // display error to the user
@@ -294,7 +294,7 @@ function load_detail(email_id, mailbox) {
 
 // PUT read to be true
 function change_read(id) {
-  fetch( `../emails/${id}` , {
+  fetch( `../../emails/${id}` , {
     method: 'PUT',
     body: JSON.stringify({
         read: true
@@ -307,7 +307,7 @@ function change_read(id) {
 // reply to user
 function reply(id) {
 
-  fetch(`../emails/${id}`)
+  fetch(`../../emails/${id}`)
   .then(response => response.json())
   .then(email => {
     // call the compose email
@@ -333,7 +333,7 @@ function reply(id) {
 
 // archive and unarchive email
 function archive(id, value) {
-  fetch(`../emails/${id}`, {
+  fetch(`../../emails/${id}`, {
     method: 'PUT', 
     body: JSON.stringify({
 
