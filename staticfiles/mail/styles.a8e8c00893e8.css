@@ -299,10 +299,6 @@
     .container {
         width: calc(100% - 60px) !important;
     }
-    .nav-bar > * {
-        margin: .2rem;
-        padding: 6px;
-    } 
 
     .nav-bar {
         display: flex;
@@ -334,7 +330,7 @@
 
 
     .nav-bar > * {
-        margin: .3rem;
+        margin: .2rem;
         padding: .5rem 1rem;
         font-size: 16px;
         font-weight: 500;

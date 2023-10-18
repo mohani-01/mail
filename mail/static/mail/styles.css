@@ -296,7 +296,13 @@
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
-
+    .container {
+        width: calc(100% - 60px) !important;
+    }
+    .nav-bar > * {
+        margin: .2rem;
+        padding: 6px;
+    } 
 
     .nav-bar {
         display: flex;
@@ -324,8 +330,11 @@
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
+    
+
+
     .nav-bar > * {
-        margin: .2rem;
+        margin: .3rem;
         padding: .5rem 1rem;
         font-size: 16px;
         font-weight: 500;
@@ -353,7 +362,6 @@
 @media only screen and (min-width: 992px) {   
     .mailbox {
        column-gap: 20px;
-     
         grid-template-columns: minmax(250px, 300px) auto 220px;
         padding: 1rem .5rem;
         align-items: center;
