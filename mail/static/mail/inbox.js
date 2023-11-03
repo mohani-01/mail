@@ -50,7 +50,7 @@ function compose_email() {
         }
       }
       // fetch the data
-      fetch('http://django-js-mail.onrender.com/emails', {
+      fetch('https://django-js-mail.onrender.com/emails', {
         method: 'POST',
         body: JSON.stringify({
           recipients: emailRecipients,
@@ -134,7 +134,7 @@ function compose_email() {
 function load_mailbox(mailbox) {
 
   // check if the ${mailbox} is inbox, sent or archive
-  fetch(`http://django-js-mail.onrender.com/emails/${mailbox}`)
+  fetch(`https://django-js-mail.onrender.com/emails/${mailbox}`)
   .then(response => response.json())
   .then(emails => {
     
@@ -223,7 +223,7 @@ function load_mailbox(mailbox) {
 function load_detail(email_id, mailbox) {
 
   // ask for the data
-  fetch(`http://django-js-mail.onrender.com/emails/${email_id}`)
+  fetch(`https://django-js-mail.onrender.com/emails/${email_id}`)
   .then(response => response.json())
   .then(email => {
     // display error to the user
@@ -319,7 +319,7 @@ function load_detail(email_id, mailbox) {
 
 // PUT read to be true
 function change_read(id) {
-  fetch( `http://django-js-mail.onrender.com/emails/${id}` , {
+  fetch( `https://django-js-mail.onrender.com/emails/${id}` , {
     method: 'PUT',
     body: JSON.stringify({
         read: true
@@ -332,7 +332,7 @@ function change_read(id) {
 // reply to user
 function reply(id) {
 
-  fetch(`http://django-js-mail.onrender.com/emails/${id}`)
+  fetch(`https://django-js-mail.onrender.com/emails/${id}`)
   .then(response => response.json())
   .then(email => {
     // call the compose email
@@ -358,7 +358,7 @@ function reply(id) {
 
 // archive and unarchive email
 function archive(id, value) {
-  fetch(`http://django-js-mail.onrender.com/emails/${id}`, {
+  fetch(`https://django-js-mail.onrender.com/emails/${id}`, {
     method: 'PUT', 
     body: JSON.stringify({
 
