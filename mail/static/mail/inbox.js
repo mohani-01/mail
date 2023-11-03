@@ -50,7 +50,7 @@ function compose_email() {
         }
       }
       // fetch the data
-      fetch('../../emails', {
+      fetch('http://django-js-mail.onrender.com/emails', {
         method: 'POST',
         body: JSON.stringify({
           recipients: emailRecipients,
@@ -78,7 +78,6 @@ function compose_email() {
           }
           return;
         }
-
         // send the user to sent page/ portion (its like redirecting a user)
         load_mailbox('sent')
 
@@ -86,8 +85,8 @@ function compose_email() {
         const div = document.createElement('div');
         div.id = 'sent-message';
         div.innerHTML = `${result.message} <button class='hide'>X</button>`;
-        document.querySelector('#emails-view').append(div);
-
+        document.querySelector('#emails-view').insertBefore(div, document.querySelector('#emails-view').children[1]);
+        
       })
       
       .catch(error => {
@@ -99,7 +98,6 @@ function compose_email() {
     }  
        
 
-  
   // Show compose view and hide other views
   document.querySelector('#compose-view').style.display = 'block';
   document.querySelector('#emails-view').style.display = 'none';
@@ -136,7 +134,7 @@ function compose_email() {
 function load_mailbox(mailbox) {
 
   // check if the ${mailbox} is inbox, sent or archive
-  fetch(`/emails/${mailbox}`)
+  fetch(`http://django-js-mail.onrender.com/emails/${mailbox}`)
   .then(response => response.json())
   .then(emails => {
     
@@ -146,6 +144,25 @@ function load_mailbox(mailbox) {
 
     }
 
+    // remove the loading svg if it exist
+    if (document.querySelector('#emails-view').querySelector('.spinner')) {
+      document.querySelector('#emails-view').querySelector('.spinner').remove()
+    }
+
+    // check if emails exist
+    if (emails.length === 0) {
+
+      // create new element
+      const li = document.createElement('li');
+      li.className = 'no-email';
+      
+      // add a message
+      li.innerHTML = `No ${mailbox}${mailbox === 'archive' ? "d" : ""} E-mail Yet.`;
+
+      // append it to the the emial view div then return
+      document.querySelector('#emails-view').append(li);
+      return;
+    }
     emails.forEach(email => {
 
       // classify each email based on their .read and mailbox value
@@ -168,15 +185,14 @@ function load_mailbox(mailbox) {
         div.innerHTML =  `<div class='recipient'>From: ${email.sender}</div> <div class='subject'>${subject}</div> <div  class='time'>${email.timestamp}</div>`;
       }
 
+
       document.querySelector('#emails-view').append(div)
 
       // listen for click for all of the emails
       div.addEventListener('click', () => {
         load_detail(email.id, mailbox)       
       });
-
     });
-  
   })
  
   // Error     
@@ -190,15 +206,24 @@ function load_mailbox(mailbox) {
   document.querySelector('#compose-view').style.display = 'none';
   document.querySelector('#detail-view').style.display = 'none';
 
-  // Show the mailbox name
+
+  // Create new spinner div
+  const spin = document.createElement('div');
+  spin.className = "spinner";
+
+  // Get loading svg
+  spin.innerHTML =  getSvg();
+
+  // Show the mailbox name and add the spinner
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
+  document.querySelector('#emails-view').append(spin);
 }
 
 // View Email in detail
 function load_detail(email_id, mailbox) {
 
   // ask for the data
-  fetch(`../../emails/${email_id}`)
+  fetch(`http://django-js-mail.onrender.com/emails/${email_id}`)
   .then(response => response.json())
   .then(email => {
     // display error to the user
@@ -294,7 +319,7 @@ function load_detail(email_id, mailbox) {
 
 // PUT read to be true
 function change_read(id) {
-  fetch( `../../emails/${id}` , {
+  fetch( `http://django-js-mail.onrender.com/emails/${id}` , {
     method: 'PUT',
     body: JSON.stringify({
         read: true
@@ -307,7 +332,7 @@ function change_read(id) {
 // reply to user
 function reply(id) {
 
-  fetch(`../../emails/${id}`)
+  fetch(`http://django-js-mail.onrender.com/emails/${id}`)
   .then(response => response.json())
   .then(email => {
     // call the compose email
@@ -333,7 +358,7 @@ function reply(id) {
 
 // archive and unarchive email
 function archive(id, value) {
-  fetch(`../../emails/${id}`, {
+  fetch(`http://django-js-mail.onrender.com/emails/${id}`, {
     method: 'PUT', 
     body: JSON.stringify({
 
@@ -375,4 +400,9 @@ function send_subject(emailSubject) {
         } else {
         return emailSubject;
       }
+}
+
+
+function getSvg() {
+  return '<svg class="svg-icon" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M512.056 908.647c-84.516 0-166.416-27.084-235.266-78.637-84.15-63.028-138.741-155.109-153.675-259.2-14.934-104.119 11.559-207.816 74.588-291.994 130.162-173.812 377.438-209.25 551.194-79.172 72.844 54.562 124.819 133.228 146.391 221.484 3.684 15.103-5.569 30.319-20.644 34.003-15.075 3.572-30.319-5.541-34.003-20.644-18.45-75.628-63-143.044-125.466-189.816-148.866-111.516-360.844-81.112-472.444 67.866-54.028 72.141-76.725 161.016-63.9 250.256 12.797 89.241 59.597 168.131 131.737 222.131 149.006 111.656 360.956 81.197 472.5-67.781 29.194-39.009 49.219-82.716 59.456-129.938 3.319-15.188 18.366-24.834 33.441-21.544 15.188 3.291 24.834 18.281 21.544 33.441-12.009 55.181-35.353 106.2-69.413 151.762-63.028 84.15-155.109 138.769-259.256 153.675-18.984 2.756-37.941 4.106-56.784 4.106z"  /></svg>'  
 }

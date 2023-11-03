@@ -1,0 +1,412 @@
+@keyframes hide {
+    0% {
+        opacity: 1;
+        height: 100%;
+        line-height: 100%;
+        padding: 20px;
+        margin-bottom: 10px;
+
+        
+    }
+
+    65% {
+        opacity: 0;
+        height: 100%;
+        line-height: 100%;
+        padding: 20px;
+        margin-bottom: 10px;
+     
+    }
+
+    
+    
+
+    100% {
+        opacity: 0;
+        height: 0px;
+        line-height: 0px;
+        padding: 0px;
+        margin-bottom: 0px;
+
+    }
+}
+/* login and register area */
+.login-form {
+    position: relative;
+    width: 100%;
+    height: 100dvh;
+    margin: 0;
+}
+
+.forms {
+    margin: 0;
+    border: 2px solid rgb(160, 203, 252);
+    padding: 2rem;
+    width: max-content;
+    border-radius: 0.5rem;
+    box-shadow: inset 0px 0px 5px rgb(91, 205, 222);
+    min-width: 400px;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(248, 248, 255);
+    background-image: linear-gradient(225deg,  white 20%, rgb(179, 230, 245));
+    
+}
+
+.message {
+    width: auto;
+    background-color: rgb(226, 73, 73);
+    color: rgb(255, 255, 255);
+    margin: 20px 0px;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.forms > h2 {
+    color: rgb(16, 113, 240);
+    text-align: center;
+    margin: 1rem;
+    padding: .5rem;
+}
+
+
+.login-button > input {
+    margin: 0.5rem 0;
+    width: 100%;
+
+}
+
+.redirect {
+    padding: .5rem;
+}
+
+/* end for login and register page */
+
+
+.user {
+    margin: 20px 0;
+    font-style: italic;
+}
+
+
+
+.nav-bar > * {
+    border-color: #9cb8f4;
+}
+
+.nav-bar > *:focus {
+    border-color: rgb(156, 184, 244);
+}  
+
+
+#compose-form {
+    margin-top: 1rem;
+}
+
+#compose-form >  * {
+    margin: 0;
+}
+
+
+#compose-message, #sent-message {
+    padding: 20px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #d4edda;
+
+    animation-name: hide;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+    animation-play-state: paused;
+}
+
+#compose-message {
+    background-color: #f8d7da;
+}
+
+.hide {
+    height: 100%;
+    line-height: 100%;
+    background-color: inherit;
+    border-radius: 5px;
+    
+    padding: 5px;
+    border: 1px solid transparent;
+    float: right;
+    outline: none;
+    color: rgb(35, 35, 35);
+}
+
+.hide:hover {
+    color: rgb(0, 0, 0);
+    border: .1rem solid black;
+}
+
+
+.mailbox {
+    border: 1px solid rgb(156, 184, 244);
+    background-image: linear-gradient(90deg,  white, white );
+    border-left: 0;
+    border-right: 0;
+    width: 100%;
+    display: grid;
+    margin: 0;
+}
+.mailbox:hover {
+    cursor: pointer;
+    border:1px solid #0f76d6;
+    box-shadow: 0px 0px 1rem .4rem rgba(193, 194, 195, 0.597);
+    border-radius: 5px;
+}
+
+.mailbox > div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.read {
+    background-image: linear-gradient(90deg, rgb(250, 250, 250) 20% , rgb(197, 197, 197)) ;
+}
+
+.compose-mail {
+    padding-left: 20px;
+    width: 100%;
+    height: 50px;
+    border: none;
+    border-bottom: .1rem solid #0f76d6;
+    resize: none;
+    outline: none;
+}
+
+.compose-mail:disabled {
+    background-color: #e9ecef;
+    border: none;
+}
+
+#to-recipient {
+    display: table;
+    width: 100%;
+    border-bottom: .1rem solid #0f76d6;
+
+}
+
+#to {
+    display:table-cell; 
+    width: 50px;
+    padding-left: 20px;
+    
+}
+
+#to-recipient > #compose-recipients {
+    display: table-cell;
+    border: none;
+}
+
+
+#compose-body {
+    border: none;
+    min-height: 270px;
+    margin-bottom: 20px;
+    width: 100%;
+    padding-top: 1rem;
+}
+
+#submit {
+    float: right;
+    padding: .5rem 2rem;
+    text-align: end;
+}
+
+.top-mailbox {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.mailbox-content {
+    margin-right: .5rem;
+    overflow: auto;
+    white-space: nowrap;
+
+}
+
+.side-mailbox {
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    min-width: 110px;
+    justify-content: center;
+    align-items: flex-end;
+
+}
+
+.side-mailbox > div {
+    margin: 0.2rem 10px;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 599px) {
+   
+    .forms { 
+        min-width: 300px;
+    }
+
+    .nav-bar > * {
+        margin: .1rem;
+        padding: 6px;
+    } 
+
+    .mailbox {
+        grid-template-areas: 
+                'to  time'
+                'sub time';
+        row-gap: 2px;
+        column-gap: 2px;
+        grid-template-columns: auto  auto;
+        justify-content: space-between;
+        
+        width: 100%;
+        min-width: 300px;
+        padding: 0.4rem 5px;
+        
+    }
+
+    .recipient {
+        
+        grid-area: to;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+    .subject {
+        grid-area: sub;
+        width: 100%;
+    }
+
+    .time {
+        grid-area: time;
+        white-space: wrap;
+        max-width: 100px;
+    }
+
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+    .container {
+        width: calc(100% - 60px) !important;
+    }
+    .nav-bar > * {
+        margin: .2rem;
+        padding: 6px;
+    } 
+
+    .nav-bar {
+        display: flex;
+        justify-content: flex-start;
+    }
+    
+    .nav-bar > .logout {
+        /* display: inherit; */
+        margin-left: auto;
+    }
+    
+    .mailbox {
+        column-gap: 20px;
+        grid-template-columns: 230px auto 100px;
+
+        padding: 1rem;
+        min-width: 530px;
+    }
+
+    .subject {
+        text-align: left;
+        white-space: wrap;
+    }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    
+
+
+    .nav-bar > * {
+        margin: .3rem;
+        padding: .5rem 1rem;
+        font-size: 16px;
+        font-weight: 500;
+    } 
+    
+ 
+    .mailbox {
+        column-gap: 20px;      
+        grid-template-columns: minmax(250px, 300px) auto 180px;
+        padding: 1rem;
+        align-items: center;
+        color: rgb(29, 25, 25);
+    
+        min-width: 600px;
+
+    }
+    
+    .recipient {  
+        white-space: nowrap;
+    }
+
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {   
+    .mailbox {
+       column-gap: 20px;
+        grid-template-columns: minmax(250px, 300px) auto 220px;
+        padding: 1rem .5rem;
+        align-items: center;
+        font-size: 18px;       
+        min-width: 700px;
+    
+    } 
+}
+
+
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
+
+@keyframes rotate {
+    from  {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
+}
+
+
+.svg-icon {
+    width: 4em;
+    height: 4em;
+    
+    
+    animation: rotate 1.4s linear infinite;
+    -webkit-animation: rotate 1.4s linear infinite;
+    -moz-animation: rotate 1.4s linear infinite;
+}
+
+.spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40dvh;
+}
+
+.no-email {
+    font-size: 2rem;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    margin: 20px;
+    padding: 10px;
+}

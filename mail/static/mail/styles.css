@@ -156,8 +156,8 @@
 }
 .mailbox:hover {
     cursor: pointer;
-    border:1px solid #0f76d6;
-    box-shadow: 0px 0px 1rem .4rem rgba(193, 194, 195, 0.597);
+    border: 1px solid #0f76d6;
+    box-shadow: 0px 0px .8rem .4rem rgba(193, 194, 195, 0.597);
     border-radius: 5px;
 }
 
@@ -378,4 +378,35 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus, 
 input:-webkit-autofill:active{
     -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
+
+@keyframes rotate {
+    from  {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
+}
+
+
+.svg-icon {
+    width: 4em;
+    height: 4em;
+    
+    
+    animation: rotate 1.4s linear infinite;
+    -webkit-animation: rotate 1.4s linear infinite;
+    -moz-animation: rotate 1.4s linear infinite;
+}
+
+.spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40dvh;
+}
+
+.no-email {
+    font-size: 1.5rem;
+    font-family: 'Courier New', Courier, monospace;
+    margin: 20px;
+    padding: 10px;
 }
