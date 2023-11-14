@@ -127,7 +127,7 @@ def email(request, email_id):
             "error": "GET or PUT request required."
         }, status=400)
 
-
+@csrf_exempt
 def login_view(request):
     if request.method == "POST":
 
