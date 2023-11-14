@@ -97,6 +97,9 @@ function compose_email() {
       return false;
     }  
        
+    if (document.querySelector('#compose-message')) {
+      document.querySelector('#compose-message').innerHTML = "";
+    }
 
   // Show compose view and hide other views
   document.querySelector('#compose-view').style.display = 'block';
